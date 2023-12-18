@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "node_module": "^0.0.0"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.1"
+  }
+}
