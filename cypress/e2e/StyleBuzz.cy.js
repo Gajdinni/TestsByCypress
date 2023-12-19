@@ -22,6 +22,7 @@ describe('Basic Authentication', () => {
    })
 })
 
+
 describe('LoadTimeout', () => {
   it('Correct', () => {
     // Wait 30 seconds for page 'load' event
@@ -37,5 +38,15 @@ describe('CallBack', () => {
       // contentWindow is the remote page's window object
   },
 })
+  })
+})
+
+
+describe('Login and Password', () => {
+  it('Correct Login', () => {
+    cy.visit('http://localhost:3000/login')
+    .get('input[name="username"]').type('Tomo')
+    .get('input[name="password"]').type('Tomo')
+    .get('button[type="submit"]').click()
   })
 })
