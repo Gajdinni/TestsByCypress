@@ -44,9 +44,28 @@ describe('CallBack', () => {
 
 describe('Login and Password', () => {
   it('Correct Login', () => {
+    cy.fixture('example.json').then((example) => {
+      const {username, password } = example.exampleCredentials;
+
     cy.visit('http://localhost:3000/login')
-    .get('input[name="username"]').type('Tomo')
-    .get('input[name="password"]').type('Tomo')
-    .get('button[type="submit"]').click()
+      .get('input[name="username"]').type(username)
+      .get('input[name="password"]').type(password)
+      .get('button[type="submit"]').click()
+    })
+    cy.fixture('example.json').then((example1) => {
+      const { username1, password1 } = example1.
+    example1;
+    cy.visit('http://localhost:3000/login')
+      .get('input[name="username"]').type(username1)
+      .get('input[name="password"]').type(password1)
+      .get('button[type="submit"]').click()
+    })
+    cy.fixture('example.json').then((example2) => {
+      const { username2, password2 } = example2.example2;
+    cy.visit('http://localhost:3000/login')
+      .get('input[name="username"]').type(username2)
+      .get('input[name="password"]').type(password2)
+      .get('button[type="submit"]').click()
+    })
   })
 })
