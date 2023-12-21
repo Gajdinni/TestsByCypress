@@ -51,7 +51,9 @@ describe('Login and Password', () => {
       .get('input[name="username"]').type(username)
       .get('input[name="password"]').type(password)
       .get('button[type="submit"]').click()
+      .visit('/')
     })
+    
     cy.fixture('example.json').then((example1) => {
       const { username1, password1 } = example1.
     example1;
@@ -59,12 +61,24 @@ describe('Login and Password', () => {
       .get('input[name="username"]').type(username1)
       .get('input[name="password"]').type(password1)
       .get('button[type="submit"]').click()
+      .visit('/')
     })
+    
     cy.fixture('example.json').then((example2) => {
       const { username2, password2 } = example2.example2;
     cy.visit('http://localhost:3000/login')
       .get('input[name="username"]').type(username2)
       .get('input[name="password"]').type(password2)
+      .get('button[type="submit"]').click()
+      .visit('/')
+    })
+    
+    cy.fixture('example.json').then((exampleC) => {
+      const { username3, password3 } = exampleC.
+    exampleCorrect;
+    cy.visit('http://localhost:3000/login')
+      .get('input[name="username"]').type(username3)
+      .get('input[name="password"]').type(password3)
       .get('button[type="submit"]').click()
     })
   })
