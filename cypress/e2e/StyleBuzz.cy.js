@@ -46,14 +46,14 @@ describe('Login and Password', () => {
   it('Correct Login', () => {
     cy.fixture('example.json').then((example) => {
       const {username, password } = example.exampleCredentials;
-
     cy.visit('http://localhost:3000/login')
       .get('input[name="username"]').type(username)
       .get('input[name="password"]').type(password)
       .get('button[type="submit"]').click()
       .visit('/')
     })
-    
+    /// example, incorrect login and password
+
     cy.fixture('example.json').then((example1) => {
       const { username1, password1 } = example1.
     example1;
@@ -63,7 +63,8 @@ describe('Login and Password', () => {
       .get('button[type="submit"]').click()
       .visit('/')
     })
-    
+    /// example, incorrect login and password
+
     cy.fixture('example.json').then((example2) => {
       const { username2, password2 } = example2.example2;
     cy.visit('http://localhost:3000/login')
@@ -72,7 +73,8 @@ describe('Login and Password', () => {
       .get('button[type="submit"]').click()
       .visit('/')
     })
-    
+    /// example, incorrect login and password
+
     cy.fixture('example.json').then((exampleC) => {
       const { username3, password3 } = exampleC.
     exampleCorrect;
@@ -81,5 +83,48 @@ describe('Login and Password', () => {
       .get('input[name="password"]').type(password3)
       .get('button[type="submit"]').click()
     })
+    /// correct login and password
   })
 })
+
+
+describe('Cache Tests', () => {
+  it('Check resource caching', () => {
+    cy.visit('/');
+    cy.reload(true); // Force page reload with cache clearing
+    // Test if resources are correctly cached
+  });
+});
+
+
+describe('Performance Tests', () => {
+  it('Measure page load time', () => {
+    cy.visit('/');
+    cy.window().then((win) => {
+      const loadTime = win.performance.timing.loadEventEnd - win.performance.timing.navigationStart;
+      cy.log(`Page load time: ${loadTime} ms`);
+      // Check if the load time is within an acceptable range
+    });
+  });
+});
+
+
+describe('Responsive Tests', () => {
+  it('Mobile Device Responsiveness', () => {
+    cy.viewport('iphone-8');
+    cy.visit('/');
+    // Test visibility and layout of elements on a mobile device
+  });
+
+  it('Tablet Responsiveness', () => {
+    cy.viewport('macbook-15');
+    cy.visit('/');
+    // Test visibility and layout of elements on a tablet
+  });
+
+  it('Desktop Screen Responsiveness', () => {
+    cy.viewport(1280, 720); // Adjust size as needed
+    cy.visit('/');
+    // Test visibility and layout of elements on a desktop screen
+  });
+});
