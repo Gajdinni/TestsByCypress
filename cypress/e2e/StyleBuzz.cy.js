@@ -1,3 +1,6 @@
+import 'cypress-axe';
+
+
 describe('The Home Page', () => {
   it('Successfully loads', () => {
    cy.visit('/') // yields the window object
@@ -90,11 +93,11 @@ describe('Login and Password', () => {
 
 describe('Cache Tests', () => {
   it('Check resource caching', () => {
-    cy.visit('/');
+    cy.visit('/')
     cy.reload(true); // Force page reload with cache clearing
     // Test if resources are correctly cached
-  });
-});
+  })
+})
 
 
 describe('Performance Tests', () => {
@@ -102,29 +105,52 @@ describe('Performance Tests', () => {
     cy.visit('/');
     cy.window().then((win) => {
       const loadTime = win.performance.timing.loadEventEnd - win.performance.timing.navigationStart;
-      cy.log(`Page load time: ${loadTime} ms`);
+      cy.log(`Page load time: ${loadTime} ms`)
       // Check if the load time is within an acceptable range
-    });
-  });
-});
+    })
+  })
+})
 
 
 describe('Responsive Tests', () => {
   it('Mobile Device Responsiveness', () => {
-    cy.viewport('iphone-8');
-    cy.visit('/');
+    cy.viewport('iphone-8')
+    cy.visit('/')
     // Test visibility and layout of elements on a mobile device
-  });
+  })
 
   it('Tablet Responsiveness', () => {
-    cy.viewport('macbook-15');
-    cy.visit('/');
+    cy.viewport('macbook-15')
+    cy.visit('/')
     // Test visibility and layout of elements on a tablet
-  });
+  })
 
   it('Desktop Screen Responsiveness', () => {
     cy.viewport(1280, 720); // Adjust size as needed
     cy.visit('/');
     // Test visibility and layout of elements on a desktop screen
-  });
-});
+  })
+})
+
+
+describe('Testing the endpoint', () => {
+  it('Should return the correct response', () => {
+    // Send an HTTP request to the endpoint
+    cy.request('GET', '/login')
+      .then((response) => {
+        // Check if the response has the expected status code
+        expect(response.status).to.eq(200)
+      })
+  })
+})
+
+
+describe('Accessibility Tests', () => {
+  it('Should pass accessibility tests', () => {
+    cy.visit('/');
+    
+    // start accessibility tests
+    cy.injectAxe() // This is example - customize options
+    cy.checkA11y(null, { includedImpacts: ['critical'] }) // This is example - customize options
+  })
+})
