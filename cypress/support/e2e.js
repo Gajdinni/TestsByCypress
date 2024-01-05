@@ -1,7 +1,12 @@
 // ***********************************************************
 // This example support/e2e.js is processed and
 // loaded automatically before your test files.
-//
+
+beforeEach(() => {
+    cy.log('I run before every test in every spec file')
+    cy.visit('/')
+  })
+
 // This is a great place to put global configuration and
 // behavior that modifies Cypress.
 //
@@ -18,3 +23,8 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+
+afterEach(() => {
+    cy.log('I run after every test in every spec file')
+  })

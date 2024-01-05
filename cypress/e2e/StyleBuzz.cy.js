@@ -1,22 +1,22 @@
 import 'cypress-axe';
 
 
+// beforeEach test the page will return to ('/')
+
 describe('The Home Page', () => {
   it('Successfully loads', () => {
-   cy.visit('/') // yields the window object
-   .visit('http://localhost:3000/articles/3') // first subpage
+   cy.visit('/articles/3') // first subpage
    .visit('/') // back to home
-   .visit('http://localhost:3000/articles/4') // second subpage
+   .visit('/articles/4') // second subpage
    .visit('/') // back to home
-   .visit('http://localhost:3000/login') // login subpage
-   .visit('/') // back to home
+   .visit('/login') // login subpage
   })
 })
 
 
 describe('Basic Authentication', () => {
-   it('/', () => {
-    cy.visit('http://localhost:3000/login', {
+   it('Authentication', () => {
+    cy.visit('/login', {
       auth: {
         username: 'tomo',
         password: 'tomo',
@@ -29,14 +29,14 @@ describe('Basic Authentication', () => {
 describe('LoadTimeout', () => {
   it('Correct', () => {
     // Wait 30 seconds for page 'load' event
-   cy.visit('http://localhost:3000/login', { timeout: 30000 })
+   cy.visit('/login', { timeout: 30000 })
   })
 })
 
 
 describe('CallBack', () => {
   it('Correct', () => {
-    cy.visit('http://localhost:3000/#dashboard', {
+    cy.visit('/#dashboard', {
       onBeforeLoad: (contentWindow) => {
       // contentWindow is the remote page's window object
   },
@@ -46,10 +46,10 @@ describe('CallBack', () => {
 
 
 describe('Login and Password', () => {
-  it('Correct Login', () => {
+  it('Correct Login and Password', () => {
     cy.fixture('example.json').then((example) => {
       const {username, password } = example.exampleCredentials;
-    cy.visit('http://localhost:3000/login')
+    cy.visit('/login')
       .get('input[name="username"]').type(username)
       .get('input[name="password"]').type(password)
       .get('button[type="submit"]').click()
@@ -60,7 +60,7 @@ describe('Login and Password', () => {
     cy.fixture('example.json').then((example1) => {
       const { username1, password1 } = example1.
     example1;
-    cy.visit('http://localhost:3000/login')
+    cy.visit('/login')
       .get('input[name="username"]').type(username1)
       .get('input[name="password"]').type(password1)
       .get('button[type="submit"]').click()
@@ -70,7 +70,7 @@ describe('Login and Password', () => {
 
     cy.fixture('example.json').then((example2) => {
       const { username2, password2 } = example2.example2;
-    cy.visit('http://localhost:3000/login')
+    cy.visit('/login')
       .get('input[name="username"]').type(username2)
       .get('input[name="password"]').type(password2)
       .get('button[type="submit"]').click()
@@ -81,7 +81,7 @@ describe('Login and Password', () => {
     cy.fixture('example.json').then((exampleC) => {
       const { username3, password3 } = exampleC.
     exampleCorrect;
-    cy.visit('http://localhost:3000/login')
+    cy.visit('/login')
       .get('input[name="username"]').type(username3)
       .get('input[name="password"]').type(password3)
       .get('button[type="submit"]').click()
@@ -93,7 +93,6 @@ describe('Login and Password', () => {
 
 describe('Cache Tests', () => {
   it('Check resource caching', () => {
-    cy.visit('/')
     cy.reload(true); // Force page reload with cache clearing
     // Test if resources are correctly cached
   })
@@ -102,7 +101,6 @@ describe('Cache Tests', () => {
 
 describe('Performance Tests', () => {
   it('Measure page load time', () => {
-    cy.visit('/');
     cy.window().then((win) => {
       const loadTime = win.performance.timing.loadEventEnd - win.performance.timing.navigationStart;
       cy.log(`Page load time: ${loadTime} ms`)
@@ -126,8 +124,8 @@ describe('Responsive Tests', () => {
   })
 
   it('Desktop Screen Responsiveness', () => {
-    cy.viewport(1280, 720); // Adjust size as needed
-    cy.visit('/');
+    cy.viewport(1280, 720) // Adjust size as needed
+    cy.visit('/')
     // Test visibility and layout of elements on a desktop screen
   })
 })
@@ -147,10 +145,53 @@ describe('Testing the endpoint', () => {
 
 describe('Accessibility Tests', () => {
   it('Should pass accessibility tests', () => {
-    cy.visit('/');
-    
     // start accessibility tests
     cy.injectAxe() // This is example - customize options
     cy.checkA11y(null, { includedImpacts: ['critical'] }) // This is example - customize options
+  })
+})
+
+
+describe('Task Tests', () => {
+  it('Use Task', () => {
+    cy.task('hello', { greeting: 'Hello', name: 'World' })
+    .visit('/')
+  })
+})
+
+
+describe('Intercept Tests', () => {
+  it('Use Intercept', () => {
+    cy.intercept('GET', '/login').as('getAllUsers')
+    cy.intercept('POST', '/login').as('createUser')
+    cy.intercept('POST','/login', { fixture: 'example.json' }).as('createUserWithFixture')
+    cy.visit('/login')
+    cy.wait('@getAllUsers')
+  })
+})
+
+
+describe('Checking buttons', () => {
+  it('correct operation of buttons', () => {
+    cy.get('.card').eq(0).click()
+      .get('.navbar-brand').click()
+      .get('.card').eq(1).click()
+      .get('.navbar-brand').click()
+      .viewport('iphone-8')
+      .get('.navbar-toggler').click()
+      .viewport(1280, 720)
+      .get('.nav-link').eq(0).click()
+      .get('.navbar-brand').click()
+      .get('.nav-link').eq(1).click()
+      .get('.navbar-brand').click()
+      .get('.card').eq(0).click()
+      .get('.nav-link').eq(0).click()
+      .get('.card').eq(0).click()
+      .get('.nav-link').eq(1).click()
+      .get('.navbar-brand').click()
+      .get('.card').eq(1).click()
+      .get('.nav-link').eq(0).click()
+      .get('.card').eq(1).click()
+      .get('.nav-link').eq(1).click()
   })
 })
