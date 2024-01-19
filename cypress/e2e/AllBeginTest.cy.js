@@ -1,4 +1,4 @@
-import 'cypress-axe';
+import 'cypress-axe'
 
 
 // beforeEach test the page will return to ('/')
@@ -39,15 +39,15 @@ describe('CallBack', () => {
     cy.visit('/#dashboard', {
       onBeforeLoad: (contentWindow) => {
       // contentWindow is the remote page's window object
-  },
-})
+    },
+   })
   })
 })
 
 
 describe('Login and Password', () => {
   it('Correct Login and Password', () => {
-    cy.fixture('example.json').then((example) => {
+    cy.fixture('users.json').then((example) => {
       const {username, password } = example.exampleCredentials;
     cy.visit('/login')
       .get('input[name="username"]').type(username)
@@ -57,9 +57,8 @@ describe('Login and Password', () => {
     })
     /// example, incorrect login and password
 
-    cy.fixture('example.json').then((example1) => {
-      const { username1, password1 } = example1.
-    example1;
+    cy.fixture('users.json').then((example1) => {
+      const { username1, password1 } = example1.example1
     cy.visit('/login')
       .get('input[name="username"]').type(username1)
       .get('input[name="password"]').type(password1)
@@ -68,8 +67,8 @@ describe('Login and Password', () => {
     })
     /// example, incorrect login and password
 
-    cy.fixture('example.json').then((example2) => {
-      const { username2, password2 } = example2.example2;
+    cy.fixture('users.json').then((example2) => {
+      const { username2, password2 } = example2.example2
     cy.visit('/login')
       .get('input[name="username"]').type(username2)
       .get('input[name="password"]').type(password2)
@@ -78,15 +77,32 @@ describe('Login and Password', () => {
     })
     /// example, incorrect login and password
 
-    cy.fixture('example.json').then((exampleC) => {
-      const { username3, password3 } = exampleC.
-    exampleCorrect;
+    cy.fixture('users.json').then((exampleC) => {
+      const { username3, password3 } = exampleC.exampleCorrect
     cy.visit('/login')
       .get('input[name="username"]').type(username3)
       .get('input[name="password"]').type(password3)
       .get('button[type="submit"]').click()
     })
     /// correct login and password
+  })
+})
+
+
+describe('Empty login and password', () => {
+  it('EmptyTest', () => {
+    cy.visit('/login')
+      .get('button[type="submit"]').click()
+    cy.fixture('users.json').then((exampleC) => {
+      const {username3, password3} = exampleC.exampleCorrect
+    cy.visit('/login')
+      .get('input[name="username"]').type(username3)
+      .get('button[type="submit"]').click()
+    cy.visit('/login')
+      .get('input[name="password"]').type(password3)
+      .get('button[type="submit"]').click()
+    })
+    /// empty login and password, only empty password, only empty login
   })
 })
 
@@ -164,7 +180,7 @@ describe('Intercept Tests', () => {
   it('Use Intercept', () => {
     cy.intercept('GET', '/login').as('getAllUsers')
     cy.intercept('POST', '/login').as('createUser')
-    cy.intercept('POST','/login', { fixture: 'example.json' }).as('createUserWithFixture')
+    cy.intercept('POST','/login', {fixture: 'users.json'}).as('createUserWithFixture')
     cy.visit('/login')
     cy.wait('@getAllUsers')
   })
@@ -195,3 +211,45 @@ describe('Checking buttons', () => {
       .get('.nav-link').eq(1).click()
   })
 })
+
+
+describe('HiTest', () => {
+  it('LoginHi', () => {
+      cy.contains('Login').click()
+      cy.fixture('users.json').then((exampleC) =>
+      {const { username3, password3 } = exampleC.exampleCorrect
+      cy.get('input[name="username"]').type(username3)
+        .get('input[name="password"]').type(password3)
+        .get('button[type="submit"]').click()
+    })
+      cy.contains('Hi').should('be.visible')
+        .url().should('include','/')
+        .get('.card:contains("test")').eq(0).click()
+      cy.contains('Hi').should('be.visible')
+        .url().should('include','/')
+  })
+})
+
+
+describe('Add Article', () => {
+  it('AddArt', () => {
+    cy.get('.nav-link').eq(1).click()
+    cy.fixture('users.json').then((exampleC) => {
+       const { username3, password3 } = exampleC.
+       exampleCorrect
+    cy.get('input[name="username"]').type(username3)
+      .get('input[name="password"]').type(password3)
+      .get('button[type="submit"]').click()
+  })
+    cy.visit('/admin')
+    cy.contains('Add article').click()  
+    cy.get('input[name="title"]').type('Testowy nagłówek Tom')
+    cy.get('textarea[name="content"]').type('Treść artykułu Tom')
+    cy.get('button[type="submit"]').click()
+    cy.visit('/')
+    cy.contains('Testowy nagłówek Tom').click()
+  })
+})
+
+
+// THE NEXT TESTS ARE IN FILES DIVIDED BY CATEGORY!!!
