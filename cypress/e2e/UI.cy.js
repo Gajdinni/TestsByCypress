@@ -43,7 +43,7 @@ describe('HiTest', () => {
     })
 })
 
-/*/
+
 describe('Add Article', () => {
     it('AddArt', () => {
       cy.get('.nav-link').eq(1).click()
@@ -63,4 +63,23 @@ describe('Add Article', () => {
     // this adds the article to the application and checks whether it has been added
     })
 })
-/*/
+
+
+describe('AddArtcilesFromFile', () => {
+  it('FromfileJSON', () => {
+    cy.fixture('articles.json').then((articles) => {
+      const {username0, password0, exampleArticle0} = articles
+    cy.contains('Login').click()
+      .get('input[name="username"]').type(username0)
+      .get('input[name="password"]').type(password0)
+      .get('button[type="submit"]').click()
+    cy.visit('/admin')
+      .contains('Add article').click()
+      .get('input[name="title"]').type(exampleArticle0.title)
+      .get('textarea[name="content"]').type(exampleArticle0.content)
+      cy.get('button[type="submit"]').click()
+      cy.visit('/')
+      cy.contains('TestTom').click()
+    })
+  })
+})

@@ -1,7 +1,7 @@
 describe('LoadTimeout', () => {
     it('Correct', () => {
       // Wait 30 seconds for page 'load' event
-     cy.visit('/login', { timeout: 30000 })
+     cy.visit('/login', {timeout: 30000})
     })
   })
 
@@ -9,9 +9,26 @@ describe('LoadTimeout', () => {
 describe('Performance Tests', () => {
     it('Measure page load time', () => {
     cy.window().then((win) => {
-        const loadTime = win.performance.timing.loadEventEnd - win.performance.timing.navigationStart
-    cy.log(`Page load time: ${loadTime} ms`)
+        const navigationStart = win.performance.timing.navigationStart;
+        const loadEventEnd = win.performance.timing.loadEventEnd;
+        const responseEnd = win.performance.timing.responseEnd;
+        const domContentLoaded = win.performance.timing.domContentLoadedEventEnd;
+
+        const pageLoadTime = loadEventEnd - navigationStart;
+        // Calculate page load time
+
+    cy.log(`Page load time: ${pageLoadTime} ms`)
     // Check if the load time is within an acceptable range
+    cy.log(`Response Time: ${responseEnd - navigationStart} ms`)
+    cy.log('DOM Content Loaded Time: ${domContentLoaded - navigationStart} ms')
+    // Adjust values based on your requirements performance
+
+    expect(pageLoadTime).to.be.lessThan(5000)
+    // Load time should be less than 5 seconds
+    expect(responseEnd - navigationStart).to.be.lessThan(3000)
+    // Response time should be less than 3 seconds
+    expect(domContentLoaded - navigationStart).to.be.lessThan(3000)
+    // DOM Content Loaded time should be less than 3 seconds
     })
   })
 })
