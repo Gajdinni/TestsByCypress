@@ -5,7 +5,7 @@ This repository contains a comprehensive Cypress testing suite for end-to-end te
 Setup
 Clone the Repository:
 
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/TomekGajda/TestByCypress.git
 cd your-repo
 
 Install Dependencies:
