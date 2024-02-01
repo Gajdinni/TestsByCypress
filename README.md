@@ -6,10 +6,9 @@ Setup
 Clone the Repository:
 
 git clone https://github.com/TomekGajda/TestByCypress.git
-cd your-repo
 
 Install Dependencies:
-npm install
+npm install cypress --save-dev
 
 Run Cypress Tests:
 npx cypress open
