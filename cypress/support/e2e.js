@@ -2,10 +2,17 @@
 // This example support/e2e.js is processed and
 // loaded automatically before your test files.
 
+// cypress/integration/login_spec.js
 beforeEach(() => {
-    cy.log('I run before every test in every spec file')
-    cy.visit('/')
-  })
+  cy.intercept('GET', '/').as('getRequest');
+  cy.visit('/')
+  cy.wait('@getRequest')
+cy.get('@getRequest').then(res => {
+  console.log(res)
+  expect(res.response.statusCode).to.equal(200)
+ });
+});
+
 
 // This is a great place to put global configuration and
 // behavior that modifies Cypress.
