@@ -17,6 +17,11 @@
   "exampleCorrect": {
     "username3": "test",
     "password3": "test"
+  },
+
+  "Admin": {
+    "adminName": "test",
+    "adminPassword": "test"
   }
 }
 
