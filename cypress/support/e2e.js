@@ -5,9 +5,9 @@
 // cypress/integration/login_spec.js
 beforeEach(() => {
   cy.intercept('GET', '/').as('getRequest');
-  cy.visit('/')
+  cy.visit('/');
   cy.wait('@getRequest')
-cy.get('@getRequest').then(res => {
+  cy.get('@getRequest').then(res => {
   console.log(res)
   expect(res.response.statusCode).to.equal(200)
  });
@@ -27,6 +27,7 @@ cy.get('@getRequest').then(res => {
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import './buttonSelectors'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
